@@ -109,16 +109,6 @@ Pull requests are welcome and encouraged for enhancements, bug fixes and documen
 
 Please respect the coding style of the file(s) you are working in, and enforce the use of the `.editorconfig` file when present.
 
-### Donations
-
-If you'd like to make a donation to my open source work, you can
-
-<a href="https://github.com/sponsors/FeralAI"><img src="https://github.com/FeralAI/GP2040/raw/main/.github/assets/github-sponsor-dimmed.png" alt="Sponsor Feral AI on Github" style="height: 40px !important;" ></a>
-
-or
-
-<a href="https://www.buymeacoffee.com/feralai" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 40px !important;" ></a>
-
 ## Acknowledgements
 
 * Ha Thach's excellent [TinyUSB library](https://github.com/hathach/tinyusb) examples
