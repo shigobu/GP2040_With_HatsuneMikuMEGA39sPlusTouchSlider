@@ -6,6 +6,7 @@
 #include <MPGS.h>
 #include "pico/stdlib.h"
 #include "storage.h"
+#include "Adafruit_MPR121.h"
 
 #define GAMEPAD_FEATURE_REPORT_SIZE 32
 
@@ -70,6 +71,8 @@ public:
 	GamepadButtonMapping *mapButtonA2;
 
 	GamepadButtonMapping **gamepadMappings;
+
+	Adafruit_MPR121 *cap;
 };
 
 #endif

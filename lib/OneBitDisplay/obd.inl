@@ -3,6 +3,8 @@
 // Drawing code for OneBitDisplay library
 //
 
+#include <Common.h>
+
 void obdSetDCMode(OBDISP *pOBD, int iMode);
 void InvertBytes(uint8_t *pData, uint8_t bLen);
 void SPI_BitBang(OBDISP *pOBD, uint8_t *pData, int iLen, uint8_t iMOSIPin, uint8_t iSCKPin);

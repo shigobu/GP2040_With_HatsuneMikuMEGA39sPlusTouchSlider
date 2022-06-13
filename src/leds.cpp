@@ -30,7 +30,7 @@ AnimationStation as;
 queue_t baseAnimationQueue;
 queue_t buttonAnimationQueue;
 queue_t animationSaveQueue;
-map<string, int> buttonPositions;
+std::map<string, int> buttonPositions;
 
 inline vector<uint8_t> *getLEDPositions(string button, vector<vector<uint8_t>> *positions)
 {

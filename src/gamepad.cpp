@@ -9,6 +9,7 @@
 #include "storage.h"
 #include "display.h"
 #include "OneBitDisplay.h"
+#include "Adafruit_MPR121.h"
 
 void Gamepad::setup()
 {
@@ -58,6 +59,9 @@ void Gamepad::setup()
 		gpio_set_dir(PIN_SETTINGS, GPIO_IN); // Set as INPUT
 		gpio_pull_up(PIN_SETTINGS);          // Set as PULLUP
 	#endif
+
+	cap = new Adafruit_MPR121();
+
 }
 
 void Gamepad::read()
