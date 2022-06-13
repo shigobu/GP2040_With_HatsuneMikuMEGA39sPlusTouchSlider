@@ -72,6 +72,8 @@ bool Adafruit_MPR121::begin(uint8_t i2caddr, TwoWire *theWire,
   writeRegister(MPR121_ECR, 0x0);
 
   uint8_t c = readRegister8(MPR121_CONFIG2);
+  pinMode(25, OUTPUT);
+  digitalWrite(25, 1);
 
   if (c != 0x24)
     return false;

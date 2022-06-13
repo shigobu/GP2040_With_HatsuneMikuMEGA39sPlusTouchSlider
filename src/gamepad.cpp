@@ -10,6 +10,7 @@
 #include "display.h"
 #include "OneBitDisplay.h"
 #include "Adafruit_MPR121.h"
+#include "Wire.h"
 
 void Gamepad::setup()
 {
@@ -60,9 +61,14 @@ void Gamepad::setup()
 		gpio_pull_up(PIN_SETTINGS);          // Set as PULLUP
 	#endif
 
+	Wire1.pins(26, 27);
 	cap = new Adafruit_MPR121();
-	cap->begin(0x5A, &Wire);
-	cap->setThreshholds(5, 2);
+	if(!cap->begin(0x5A, &Wire1))
+	{
+		// pinMode(25, OUTPUT);
+		// digitalWrite(25, 1);
+	}
+	//cap->setThresholds(10, 7);
 }
 
 void Gamepad::read()
