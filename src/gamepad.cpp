@@ -61,7 +61,8 @@ void Gamepad::setup()
 	#endif
 
 	cap = new Adafruit_MPR121();
-
+	cap->begin(0x5A, &Wire);
+	cap->setThreshholds(5, 2);
 }
 
 void Gamepad::read()
@@ -105,4 +106,63 @@ void Gamepad::read()
 	state.ry = GAMEPAD_JOYSTICK_MID;
 	state.lt = 0;
 	state.rt = 0;
+}
+
+void Gamepad::slideBar(){
+	const uint32_t slideBarInterval_ms = 1;
+	static uint32_t slideBarStart_ms = 0;
+
+	if (millis() - slideBarStart_ms < slideBarInterval_ms) {
+		return;  // not enough time
+	}
+	slideBarStart_ms += slideBarInterval_ms;
+
+	currtouched = cap->touched();
+
+	if (lasttouched == 0 && currtouched == 0) {
+		//離れている
+		startTouchedPosition = 0;
+		currTouchedPosition = 0;
+		state.lx = GAMEPAD_JOYSTICK_MID;
+	} else if (lasttouched == 0 && currtouched != 0) {
+		//触れたとき
+		startTouchedPosition = makeTouchedPosition(currtouched);
+		state.lx = GAMEPAD_JOYSTICK_MID;
+	} else if (lasttouched != 0 && currtouched == 0) {
+		//離れたとき
+		startTouchedPosition = 0;
+		currTouchedPosition = 0;
+		state.lx = GAMEPAD_JOYSTICK_MID;
+	} else if (lasttouched != 0 && currtouched != 0) {
+		//触れている途中
+		currTouchedPosition = makeTouchedPosition(currtouched);
+		int16_t dist = currTouchedPosition - startTouchedPosition;
+		if (dist > 3) {
+			dist = 3;
+		} else if (dist < -3) {
+			dist = -3;
+		}
+		state.lx = GAMEPAD_JOYSTICK_MID + dist * (GAMEPAD_JOYSTICK_MID / 3);
+	}
+
+	lasttouched = currtouched;
+}
+
+int8_t Gamepad::makeTouchedPosition(uint16_t touched){
+	int8_t bit = 0;
+	int8_t min = 0;
+	for (bit = 0; bit < 12; bit++) {
+		if (touched & (1 << bit)) {
+			min = bit;
+		}
+	}
+
+	int8_t max = 11;
+	for (bit = 11; bit >= 0; bit--) {
+		if (touched & (1 << bit)) {
+			max = bit;
+		}
+	}
+
+	return (min + max) / 2;
 }
