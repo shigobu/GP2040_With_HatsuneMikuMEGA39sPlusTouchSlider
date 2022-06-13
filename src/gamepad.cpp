@@ -106,17 +106,11 @@ void Gamepad::read()
 	state.ry = GAMEPAD_JOYSTICK_MID;
 	state.lt = 0;
 	state.rt = 0;
+
+	slideBar();
 }
 
 void Gamepad::slideBar(){
-	const uint32_t slideBarInterval_ms = 1;
-	static uint32_t slideBarStart_ms = 0;
-
-	if (millis() - slideBarStart_ms < slideBarInterval_ms) {
-		return;  // not enough time
-	}
-	slideBarStart_ms += slideBarInterval_ms;
-
 	currtouched = cap->touched();
 
 	if (lasttouched == 0 && currtouched == 0) {
