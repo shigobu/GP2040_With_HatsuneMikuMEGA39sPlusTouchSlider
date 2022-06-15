@@ -61,12 +61,12 @@ void Gamepad::setup()
 		gpio_pull_up(PIN_SETTINGS);          // Set as PULLUP
 	#endif
 
-	Wire1.pins(26, 27);
+	Wire.pins(0, 1);
 	cap = new Adafruit_MPR121();
-	if(!cap->begin(0x5A, &Wire1))
+	if(!cap->begin(0x5A, &Wire))
 	{
-		// pinMode(25, OUTPUT);
-		// digitalWrite(25, 1);
+		pinMode(PICO_DEFAULT_LED_PIN, OUTPUT);
+		digitalWrite(PICO_DEFAULT_LED_PIN, 1);
 	}
 	//cap->setThresholds(10, 7);
 }
