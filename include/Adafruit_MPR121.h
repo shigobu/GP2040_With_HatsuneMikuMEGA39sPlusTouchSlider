@@ -22,9 +22,7 @@
 #ifndef ADAFRUIT_MPR121_H
 #define ADAFRUIT_MPR121_H
 
-#include "Arduino.h"
-#include <Adafruit_BusIO_Register.h>
-#include <Adafruit_I2CDevice.h>
+#include "hardware/i2c.h"
 
 // The default I2C address
 #define MPR121_I2CADDR_DEFAULT 0x5A        ///< default I2C address
@@ -84,10 +82,9 @@ enum {
 class Adafruit_MPR121 {
 public:
   // Hardware I2C
-  Adafruit_MPR121();
+  Adafruit_MPR121(uint8_t i2caddr = MPR121_I2CADDR_DEFAULT, i2c_inst_t *theWire = i2c0, int SDA = 0, int SCL = 1, bool enablePullup = true, uint32_t speed_Hz = 100000);
 
-  bool begin(uint8_t i2caddr = MPR121_I2CADDR_DEFAULT, TwoWire *theWire = &Wire,
-             uint8_t touchThreshold = MPR121_TOUCH_THRESHOLD_DEFAULT,
+  bool begin(uint8_t touchThreshold = MPR121_TOUCH_THRESHOLD_DEFAULT,
              uint8_t releaseThreshold = MPR121_RELEASE_THRESHOLD_DEFAULT);
 
   uint16_t filteredData(uint8_t t);
@@ -103,7 +100,12 @@ public:
   void setThresholds(uint8_t touch, uint8_t release);
 
 private:
-  Adafruit_I2CDevice *i2c_dev = NULL;
+  uint8_t _i2caddr = MPR121_I2CADDR_DEFAULT;
+  i2c_inst_t *i2c_dev = NULL;
+  int _sda = 0;
+  int _scl = 1;
+  uint32_t _speed = 100000;
+  bool _enablePullup = true;
 };
 
 #endif

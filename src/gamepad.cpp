@@ -11,6 +11,7 @@
 #include "OneBitDisplay.h"
 #include "Adafruit_MPR121.h"
 #include "Wire.h"
+#include "Arduino.h"
 
 void Gamepad::setup()
 {
@@ -62,8 +63,8 @@ void Gamepad::setup()
 	#endif
 
 	Wire.pins(0, 1);
-	cap = new Adafruit_MPR121();
-	if(!cap->begin(0x5A, &Wire))
+	cap = new Adafruit_MPR121(0x5A);
+	if(!cap->begin())
 	{
 		pinMode(PICO_DEFAULT_LED_PIN, OUTPUT);
 		digitalWrite(PICO_DEFAULT_LED_PIN, 1);
