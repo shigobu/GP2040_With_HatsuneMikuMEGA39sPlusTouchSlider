@@ -1,113 +1,47 @@
-初音ミク Project DIVA MEGA39's+ 用にタッチスライダーを追加したい。
+# GP2040 Firmware 初音ミク Project DIVA 拡張版
 
-# GP2040 Firmware
+GP2040は、Raspberry Pi PicoおよびRP2040マイコンベースのその他のボード用ゲームパッドファームウェアであり、複数のプラットフォームにまたがる豊富な機能セットを備えた高性能を提供します。詳細は、[オリジナル](https://github.com/FeralAI/GP2040)のドキュメントをご覧ください。
 
-GP2040 is a gamepad firmware for the Raspberry Pi Pico and other boards based on the RP2040 microcontroller, and provides high performance with a rich feature set across multiple platforms. GP2040 is compatible with PC, MiSTer, Android, Raspberry Pi, Nintendo Switch, PS3 and PS4 (legacy controller support).
+このリポジトリは、GP2040を拡張し、タッチセンサモジュールを接続できるようにしたものです。現状、スライドの同時押しは未対応です。
 
-Full documentation can be found at <https://gp2040.info>.
+## 対応タッチセンサ
 
-## Features
+* [Adafruit MPR121 12-Key Capacitive Touch Sensor](https://www.adafruit.com/product/1982) またはMPR121チップ使用同等品  
+日本国内では、秋月電子通商・スイッチサイエンス・マルツ 等で購入できます。AliExpressでも安価で同等のものが購入できますが、Adafruit製のものをおすすめします。このファームウェアは、Adafruit製のライブラリを改変したものが含まれています。このライブラリが無ければ完成しませんでした。ありがとうAdafruit。
 
-* Selectable input modes (XInput, DirectInput and Nintendo Switch)
-* Overclocked polling rate to 1000 Hz (1 ms) in all modes, with less than 1 ms of input latency
-* Multiple SOCD cleaning modes - Neutral, Up Priority (a.k.a. Hitbox), Second Input Priority
-* Left and Right stick emulation via D-pad inputs
-* Per-button RGB LED support
-* PWM and RGB player indicator LED support (XInput only)
-* Saves options to internal memory
-* Support for 128x64 monochrome I2C displays using SSD1306, SH1106 or SH1107 display drivers.
-* [Built-in configuration app](https://gp2040.info/#/web-configurator) hosted via embedded webserver...no downloading a separate app!
+## 遅延
 
-Take a look at the [GP2040 Usage](https://gp2040.info/#/usage) page for more details.
+[自作の遅延測定アプリ](https://github.com/shigobu/gamepadLatencyCheckerShigobu )を使用し、測定しました。オリジナルGP2040より 1 ms 程度長くなっています。 
 
-## Performance
+| Min | Max | Avg |
+| - | - | - |
+| 0.80 ms | 2.28 ms | 1.56 ms |
 
-Input latency is tested using the methodology outlined at [WydD's inputlag.science website](https://inputlag.science/controller/methodology), using the default 1000 Hz (1 ms) polling rate in the firmware.
+## インストール方法
 
-| Version | Mode | Poll Rate | Min | Max | Avg | Stdev | % on time | %1f skip | %2f skip |
-| - | - | - | - | - | - | - | - | - | - |
-| v0.3.1 | All | 1 ms | 0.56 ms | 1.32 ms | 0.85 ms | 0.24 ms | 95.95% | 4.05% | 0% |
+オリジナルとほとんど変わらないので、オリジナルを翻訳したものを載せます。
 
-Full results can be found in the [GP2040 Firmware Latency Test Results](https://docs.google.com/spreadsheets/d/1eeX0SCOYnUDZMYzt_69wDpjnB_XUtvsfvHJYxxgTj28/edit#gid=1559471406) Google Sheet.
+ビルド済み `uf2` ファイルは [Releases](https://github.com/shigobu/GP2040_With_HatsuneMikuPjdTouchSlider/releases) セクションで入手できます。配線図は[こちら](https://raw.githubusercontent.com/shigobu/GP2040_With_HatsuneMikuPjdTouchSlider/main/configs/Pico/assets/PinMapping.png)。
 
-## Installation
+手順は、デバイスによって若干異なります。 これらの手順は、RaspberryPiPico用です。
 
-Prebuilt `uf2` files are available in the [Releases](https://github.com/shigobu/GP2040_With_HatsuneMikuPjdTouchSlider/releases) section for the following boards and controllers:
+> デバイスが以前にGP2040以外で使用されたことがある場合は、最初にこのファイルをフラッシュして、オンボードストレージをクリアしてください：[flash_nuke.uf2](docs/downloads/flash_nuke.uf2)。 nukeファイルをフラッシュした後、clearプログラムが実行され、RPI-RP2ドライブが再表示されるまで1分待ちます。
 
-* [Raspberry Pi Pico](https://github.com/shigobu/GP2040_With_HatsuneMikuPjdTouchSlider/tree/main/configs/Pico) and other pin-compatible boards such as the Pimoroni Pico Lipo ([wiring diagram](https://raw.githubusercontent.com/shigobu/GP2040_With_HatsuneMikuPjdTouchSlider/main/configs/Pico/assets/PinMapping.png))
-* [Pico Fighting Board](https://github.com/FeralAI/GP2040-Config-PicoFightingBoard/)
-* [Crush Counter](https://github.com/shigobu/GP2040_With_HatsuneMikuPjdTouchSlider/tree/main/configs/CrushCounter) (formerly the [OSFRD](https://github.com/shigobu/GP2040_With_HatsuneMikuPjdTouchSlider/tree/main/configs/OSFRD))
-* [DURAL](https://github.com/shigobu/GP2040_With_HatsuneMikuPjdTouchSlider/tree/main/configs/DURAL)
-* [Flatbox Rev 4](https://github.com/jfedor2/flatbox/tree/master/hardware-rev4)
+1. [Releases](https://github.com/shigobu/GP2040_With_HatsuneMikuPjdTouchSlider/releases)セクションから最新の `GP2040-RaspberryPiPico-39pjd_vX.X.Xmiku.uf2` ファイルをダウンロードします。
+1. Picoのプラグを抜きます。
+1. PicoのBOOTSELボタンを押したまま、コンピューターに接続します。 `RPI-RP2`という名前の新しいリムーバブルドライブがファイルエクスプローラーに表示されます。
+1. `GP2040-RaspberryPiPico-39pjd_vX.X.Xmiku.uf2`ファイルをリムーバブルドライブにドラッグアンドドロップします。 これにより、ボードがフラッシュされます。
+1. ボードはGP2040ファームウェアを実行しており、コンピューターにコントローラーとして表示されます。
 
-Several other working example configurations are located in the [configs](https://github.com/shigobu/GP2040_With_HatsuneMikuPjdTouchSlider/tree/main/configs) folder.
+## 課題
+* スライドの同時押に対応する。
+* 遅延をオリジナルGP2040と同程度にする。
 
-The instructions will slightly vary based on your device. These instructions are for a Raspberry Pi Pico.
+## サポート
 
-> If the device has been previously used for something other than GP2040, please flash this file first to clear the on-board storage: [flash_nuke.uf2](docs/downloads/flash_nuke.uf2). After flashing the nuke file, wait a minute for the clear program to run and the RPI-RP2 drive to reappear.
+タッチスライダーに関する機能、問題、またはその他のことについて話し合いたい場合は、[issueを作成](https://github.com/shigobu/GP2040_With_HatsuneMikuPjdTouchSlider/issues/new)してください。
 
-1. Download the latest `GP2040.uf2` file from the [Releases](https://github.com/shigobu/GP2040_With_HatsuneMikuPjdTouchSlider/releases) section for your board (e.g. `GP2040-PiPico.uf2` for the Raspberry Pi Pico).
-1. Unplug your Pico.
-1. Hold the BOOTSEL button on the Pico and plug into your computer. A new removable drive named `RPI-RP2` should appear in your file explorer.
-1. Drag and drop the `GP2040.uf2` file into the removable drive. This will flash the board.
-1. The board is now running the GP2040 firmware and will appear as a controller on your computer.
-
-## Support
-
-If you would like to discuss features, issues or anything else related to GP2040 please [create an issue](https://github.com/shigobu/GP2040_With_HatsuneMikuPjdTouchSlider/issues/new) or join the [OpenStick GP2040 Discord channel](https://discord.gg/KyQCHcjwJ2).
-
-### Frequently Asked Questions
-
-#### Which input mode should I use?
-
-Generally speaking, XInput will be the mode of choice for everything except Nintendo Switch and PlayStation 3. XInput mode is the most fully-featured, has the best compatibility with PC games and is compatible with console adapters like the Brook Wingman product line. All things being equal, performance is the same in all modes.
-
-#### What is the extent of PS4 support in GP2040?
-
-GP2040 will work on PS4 games that implement support for legacy PS3 controllers. Many of the popular PS4 fighting games have this support.
-
-#### Does/can/will GP2040 natively support the PS4, PS5, Xbox One or Xbox Series consoles?
-
-These consoles implement security to prevent unauthorized accessories from being used. The process of cracking or bypassing that security may not be legal everywhere. These consoles could be supported in the future if a user-friendly and completely legal implementation method is found.
-
-#### Can I use multiple controllers with GP2040 on the same system?
-
-Yes! Each board with GP2040 is treated as a separate controller. The one thing to keep in mind would be to only run the web configurator for one controller at a time.
-
-#### Does GP2040 really have less than 1 ms of latency?
-
-Yes...if your platform supports 1000 Hz USB polling. GP2040 is configured for 1000 Hz / 1 ms polling by default in all modes, however some systems override or ignore the polling rate the controller requests. PC and MiSTer are confirmed to work with 1000 Hz polling. Even if your system doesn't support a USB polling rate that high, you can feel comfortable knowing GP2040 is still reading and processing your inputs as fast as the target system will allow.
-
-#### Do the additional features like RGB LEDs, Player LEDs and OLED displays affect performance?
-
-No! The RP2040 chip contains two processing cores. GP2040 dedicates one core to reading inputs and sending them via USB, while the second core is used to handle any auxiliary modules like LEDs and display support. No matter how crazy the feature set of GP2040 becomes, it's unlikely your controller's input latency will be affected.
-
-#### Why do the buttons have weird labels like B3, A1, S2, etc.?
-
-GP2040 uses a generic system for handling button inputs that most closely maps to a traditional PlayStation controller layout with a few extra buttons. This means 4 face buttons (B1-B4), 4 shoulder buttons (L1, L2, R1, R2), Select and Start (S1, S2), 2 stick buttons (L3, R3) and 2 auxiliary buttons for things like Home and Capture (A1, A2) on the Switch. The GP2040 documentation and web configurator have a dropdown to change the labels to more familiar controller layouts. You can also refer to the button mapping table on the [GP2040 Usage](https://gp2040.info/#/usage?id=buttons) page.
-
-#### Why use PlatformIO instead of \<insert favorite project setup\>?
-
-Setting up a development environment to build Pico SDK projects is a manual process which requires several components to be installed and configured. Using PlatformIO allows easy installation and updating of build and project dependencies, and makes for a less confusing experience for new developers and people that just want to make a few tweaks for a custom build.
-
-#### What kind of voodoo is that built-in web configurator?
-
-There's no magic here, just some useful libraries working together:
-
-* Single page application using React and Bootstrap is embedded in the GP2040 firmware
-* TinyUSB library provides virtual network connection over USB via RNDIS
-* lwIP library provides an HTTP server for the embedded React app and the web configuration API
-* ArduinoJson library is used for serialization and deserialization of web API requests
-
-## Contributions
-
-Want to help improve GP2040? There are a bunch of ways to contribute!
-
-### Pull Requests
-
-Pull requests are welcome and encouraged for enhancements, bug fixes and documentation updates.
-
-Please respect the coding style of the file(s) you are working in, and enforce the use of the `.editorconfig` file when present.
+その他の機能に関することは、オリジナルのドキュメントを参照してください。
 
 ## Acknowledgements
 
@@ -115,3 +49,4 @@ Please respect the coding style of the file(s) you are working in, and enforce t
 * fluffymadness's [tinyusb-xinput](https://github.com/fluffymadness/tinyusb-xinput) sample
 * Kevin Boone's [blog post on using RP2040 flash memory as emulated EEPROM](https://kevinboone.me/picoflash.html)
 * [bitbank2](https://github.com/bitbank2) for the [OneBitDisplay](https://github.com/bitbank2/OneBitDisplay) and [BitBang_I2C](https://github.com/bitbank2/BitBang_I2C) libraries, which were ported for use with the Pico SDK
+* [Adafruit MPR121 Library](https://github.com/adafruit/Adafruit_MPR121)
