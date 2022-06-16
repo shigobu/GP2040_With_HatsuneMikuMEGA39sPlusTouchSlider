@@ -32,21 +32,21 @@ Full results can be found in the [GP2040 Firmware Latency Test Results](https://
 
 ## Installation
 
-Prebuilt `uf2` files are available in the [Releases](https://github.com/shigobu/GP2040_With_HatsuneMikuMEGA39sPlusTouchSlider/releases) section for the following boards and controllers:
+Prebuilt `uf2` files are available in the [Releases](https://github.com/shigobu/GP2040_With_HatsuneMikuPjdTouchSlider/releases) section for the following boards and controllers:
 
-* [Raspberry Pi Pico](https://github.com/shigobu/GP2040_With_HatsuneMikuMEGA39sPlusTouchSlider/tree/main/configs/Pico) and other pin-compatible boards such as the Pimoroni Pico Lipo ([wiring diagram](https://raw.githubusercontent.com/shigobu/GP2040_With_HatsuneMikuMEGA39sPlusTouchSlider/main/configs/Pico/assets/PinMapping.png))
+* [Raspberry Pi Pico](https://github.com/shigobu/GP2040_With_HatsuneMikuPjdTouchSlider/tree/main/configs/Pico) and other pin-compatible boards such as the Pimoroni Pico Lipo ([wiring diagram](https://raw.githubusercontent.com/shigobu/GP2040_With_HatsuneMikuPjdTouchSlider/main/configs/Pico/assets/PinMapping.png))
 * [Pico Fighting Board](https://github.com/FeralAI/GP2040-Config-PicoFightingBoard/)
-* [Crush Counter](https://github.com/shigobu/GP2040_With_HatsuneMikuMEGA39sPlusTouchSlider/tree/main/configs/CrushCounter) (formerly the [OSFRD](https://github.com/shigobu/GP2040_With_HatsuneMikuMEGA39sPlusTouchSlider/tree/main/configs/OSFRD))
-* [DURAL](https://github.com/shigobu/GP2040_With_HatsuneMikuMEGA39sPlusTouchSlider/tree/main/configs/DURAL)
+* [Crush Counter](https://github.com/shigobu/GP2040_With_HatsuneMikuPjdTouchSlider/tree/main/configs/CrushCounter) (formerly the [OSFRD](https://github.com/shigobu/GP2040_With_HatsuneMikuPjdTouchSlider/tree/main/configs/OSFRD))
+* [DURAL](https://github.com/shigobu/GP2040_With_HatsuneMikuPjdTouchSlider/tree/main/configs/DURAL)
 * [Flatbox Rev 4](https://github.com/jfedor2/flatbox/tree/master/hardware-rev4)
 
-Several other working example configurations are located in the [configs](https://github.com/shigobu/GP2040_With_HatsuneMikuMEGA39sPlusTouchSlider/tree/main/configs) folder.
+Several other working example configurations are located in the [configs](https://github.com/shigobu/GP2040_With_HatsuneMikuPjdTouchSlider/tree/main/configs) folder.
 
 The instructions will slightly vary based on your device. These instructions are for a Raspberry Pi Pico.
 
 > If the device has been previously used for something other than GP2040, please flash this file first to clear the on-board storage: [flash_nuke.uf2](docs/downloads/flash_nuke.uf2). After flashing the nuke file, wait a minute for the clear program to run and the RPI-RP2 drive to reappear.
 
-1. Download the latest `GP2040.uf2` file from the [Releases](https://github.com/shigobu/GP2040_With_HatsuneMikuMEGA39sPlusTouchSlider/releases) section for your board (e.g. `GP2040-PiPico.uf2` for the Raspberry Pi Pico).
+1. Download the latest `GP2040.uf2` file from the [Releases](https://github.com/shigobu/GP2040_With_HatsuneMikuPjdTouchSlider/releases) section for your board (e.g. `GP2040-PiPico.uf2` for the Raspberry Pi Pico).
 1. Unplug your Pico.
 1. Hold the BOOTSEL button on the Pico and plug into your computer. A new removable drive named `RPI-RP2` should appear in your file explorer.
 1. Drag and drop the `GP2040.uf2` file into the removable drive. This will flash the board.
@@ -54,7 +54,7 @@ The instructions will slightly vary based on your device. These instructions are
 
 ## Support
 
-If you would like to discuss features, issues or anything else related to GP2040 please [create an issue](https://github.com/shigobu/GP2040_With_HatsuneMikuMEGA39sPlusTouchSlider/issues/new) or join the [OpenStick GP2040 Discord channel](https://discord.gg/KyQCHcjwJ2).
+If you would like to discuss features, issues or anything else related to GP2040 please [create an issue](https://github.com/shigobu/GP2040_With_HatsuneMikuPjdTouchSlider/issues/new) or join the [OpenStick GP2040 Discord channel](https://discord.gg/KyQCHcjwJ2).
 
 ### Frequently Asked Questions
 
