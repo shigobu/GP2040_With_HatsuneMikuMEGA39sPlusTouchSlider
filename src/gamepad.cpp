@@ -4,6 +4,7 @@
  */
 
 #include "pico/stdlib.h"
+#include "pico.h"
 #include "gamepad.h"
 #include "display.h"
 #include "storage.h"
