@@ -10,7 +10,6 @@
 #include "display.h"
 #include "OneBitDisplay.h"
 #include "Adafruit_MPR121.h"
-#include "Wire.h"
 #include "Arduino.h"
 
 void Gamepad::setup()
@@ -72,6 +71,9 @@ void Gamepad::setup()
 		cap = nullptr;
 	}
 	//cap->setThresholds(10, 7);
+
+	hasLeftAnalogStick = true;
+	hasRightAnalogStick = true;
 }
 
 void Gamepad::read()
