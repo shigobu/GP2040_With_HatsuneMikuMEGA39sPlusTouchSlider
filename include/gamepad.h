@@ -6,6 +6,7 @@
 #include <MPGS.h>
 #include "pico/stdlib.h"
 #include "storage.h"
+#include "Adafruit_MPR121.h"
 
 #define GAMEPAD_FEATURE_REPORT_SIZE 32
 
@@ -32,6 +33,8 @@ public:
 
 	void setup();
 	void read();
+	void slideBar();
+	int8_t makeTouchedPosition(uint16_t touched);
 
 	void process()
 	{
@@ -70,6 +73,12 @@ public:
 	GamepadButtonMapping *mapButtonA2;
 
 	GamepadButtonMapping **gamepadMappings;
+
+	Adafruit_MPR121 *cap;
+	uint16_t lasttouched = 0;
+	uint16_t currtouched = 0;
+	int8_t startTouchedPosition = 0;
+	int8_t currTouchedPosition = 0;
 };
 
 #endif

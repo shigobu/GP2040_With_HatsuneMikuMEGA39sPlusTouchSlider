@@ -9,6 +9,8 @@
 #include "storage.h"
 #include "display.h"
 #include "OneBitDisplay.h"
+#include "Adafruit_MPR121.h"
+#include "Arduino.h"
 
 void Gamepad::setup()
 {
@@ -58,6 +60,20 @@ void Gamepad::setup()
 		gpio_set_dir(PIN_SETTINGS, GPIO_IN); // Set as INPUT
 		gpio_pull_up(PIN_SETTINGS);          // Set as PULLUP
 	#endif
+
+	cap = new Adafruit_MPR121(0x5A);
+	if(!cap->begin())
+	{
+		//エラー表示　25番はビルドインLED
+		pinMode(25, OUTPUT);
+		digitalWrite(25, 1);
+		delete(cap);
+		cap = nullptr;
+	}
+	//cap->setThresholds(10, 7);
+
+	hasLeftAnalogStick = true;
+	hasRightAnalogStick = true;
 }
 
 void Gamepad::read()
@@ -101,4 +117,61 @@ void Gamepad::read()
 	state.ry = GAMEPAD_JOYSTICK_MID;
 	state.lt = 0;
 	state.rt = 0;
+
+	slideBar();
+}
+
+void Gamepad::slideBar(){
+	if (cap == nullptr) {
+		return;
+	}
+	
+	currtouched = cap->touched();
+
+	if (lasttouched == 0 && currtouched == 0) {
+		//離れている
+		startTouchedPosition = 0;
+		currTouchedPosition = 0;
+		state.lx = GAMEPAD_JOYSTICK_MID;
+	} else if (lasttouched == 0 && currtouched != 0) {
+		//触れたとき
+		startTouchedPosition = makeTouchedPosition(currtouched);
+		state.lx = GAMEPAD_JOYSTICK_MID;
+	} else if (lasttouched != 0 && currtouched == 0) {
+		//離れたとき
+		startTouchedPosition = 0;
+		currTouchedPosition = 0;
+		state.lx = GAMEPAD_JOYSTICK_MID;
+	} else if (lasttouched != 0 && currtouched != 0) {
+		//触れている途中
+		currTouchedPosition = makeTouchedPosition(currtouched);
+		int16_t dist = currTouchedPosition - startTouchedPosition;
+		if (dist > 3) {
+			dist = 3;
+		} else if (dist < -3) {
+			dist = -3;
+		}
+		state.lx = GAMEPAD_JOYSTICK_MID + dist * (GAMEPAD_JOYSTICK_MID / 3);
+	}
+
+	lasttouched = currtouched;
+}
+
+int8_t Gamepad::makeTouchedPosition(uint16_t touched){
+	int8_t bit = 0;
+	int8_t min = 0;
+	for (bit = 0; bit < 12; bit++) {
+		if (touched & (1 << bit)) {
+			min = bit;
+		}
+	}
+
+	int8_t max = 11;
+	for (bit = 11; bit >= 0; bit--) {
+		if (touched & (1 << bit)) {
+			max = bit;
+		}
+	}
+
+	return (min + max) / 2;
 }

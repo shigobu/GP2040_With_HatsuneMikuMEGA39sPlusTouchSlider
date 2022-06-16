@@ -60,11 +60,6 @@ enum {
   DEVICE_DS1307
 };
 
-#ifndef LOW
-#define LOW 0
-#define HIGH 1
-#endif
-
 typedef struct mybbi2c
 {
 uint8_t iSDA, iSCL;   // pin numbers (0xff = disabled)
