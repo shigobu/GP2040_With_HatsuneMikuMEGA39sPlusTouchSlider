@@ -14,7 +14,7 @@
 
 using namespace std;
 
-static std::map<uint32_t, RGB> themeStaticRainbow({
+static map<uint32_t, RGB> themeStaticRainbow({
 	{ GAMEPAD_MASK_DL, ColorRed },
 	{ GAMEPAD_MASK_DD, ColorOrange },
 	{ GAMEPAD_MASK_DR, ColorYellow },
@@ -29,7 +29,7 @@ static std::map<uint32_t, RGB> themeStaticRainbow({
 	{ GAMEPAD_MASK_L2, ColorMagenta },
 });
 
-static std::map<uint32_t, RGB> themeGuiltyGearTypeA({
+static map<uint32_t, RGB> themeGuiltyGearTypeA({
 	{ GAMEPAD_MASK_DU, ColorWhite },
 	{ GAMEPAD_MASK_DD, ColorWhite },
 	{ GAMEPAD_MASK_DL, ColorWhite },
@@ -41,7 +41,7 @@ static std::map<uint32_t, RGB> themeGuiltyGearTypeA({
 	{ GAMEPAD_MASK_R2, ColorOrange },
 });
 
-static std::map<uint32_t, RGB> themeGuiltyGearTypeB({
+static map<uint32_t, RGB> themeGuiltyGearTypeB({
 	{ GAMEPAD_MASK_DU, ColorWhite },
 	{ GAMEPAD_MASK_DD, ColorWhite },
 	{ GAMEPAD_MASK_DL, ColorWhite },
@@ -53,7 +53,7 @@ static std::map<uint32_t, RGB> themeGuiltyGearTypeB({
 	{ GAMEPAD_MASK_R2, ColorOrange },
 });
 
-static std::map<uint32_t, RGB> themeGuiltyGearTypeC({
+static map<uint32_t, RGB> themeGuiltyGearTypeC({
 	{ GAMEPAD_MASK_DU, ColorWhite },
 	{ GAMEPAD_MASK_DD, ColorWhite },
 	{ GAMEPAD_MASK_DL, ColorWhite },
@@ -65,7 +65,7 @@ static std::map<uint32_t, RGB> themeGuiltyGearTypeC({
 	{ GAMEPAD_MASK_R2, ColorRed },
 });
 
-static std::map<uint32_t, RGB> themeGuiltyGearTypeD({
+static map<uint32_t, RGB> themeGuiltyGearTypeD({
 	{ GAMEPAD_MASK_DU, ColorWhite },
 	{ GAMEPAD_MASK_DD, ColorWhite },
 	{ GAMEPAD_MASK_DL, ColorWhite },
@@ -77,7 +77,7 @@ static std::map<uint32_t, RGB> themeGuiltyGearTypeD({
 	{ GAMEPAD_MASK_R1, ColorOrange },
 });
 
-static std::map<uint32_t, RGB> themeGuiltyGearTypeE({
+static map<uint32_t, RGB> themeGuiltyGearTypeE({
 	{ GAMEPAD_MASK_DU, ColorWhite },
 	{ GAMEPAD_MASK_DD, ColorWhite },
 	{ GAMEPAD_MASK_DL, ColorWhite },
@@ -89,7 +89,7 @@ static std::map<uint32_t, RGB> themeGuiltyGearTypeE({
 	{ GAMEPAD_MASK_R1, ColorOrange },
 });
 
-static std::map<uint32_t, RGB> themeNeoGeo({
+static map<uint32_t, RGB> themeNeoGeo({
 	{ GAMEPAD_MASK_DU, ColorWhite },
 	{ GAMEPAD_MASK_DD, ColorWhite },
 	{ GAMEPAD_MASK_DL, ColorWhite },
@@ -100,7 +100,7 @@ static std::map<uint32_t, RGB> themeNeoGeo({
 	{ GAMEPAD_MASK_L1, ColorBlue },
 });
 
-static std::map<uint32_t, RGB> themeNeoGeoCurved({
+static map<uint32_t, RGB> themeNeoGeoCurved({
 	{ GAMEPAD_MASK_DU, ColorWhite },
 	{ GAMEPAD_MASK_DD, ColorWhite },
 	{ GAMEPAD_MASK_DL, ColorWhite },
@@ -111,7 +111,7 @@ static std::map<uint32_t, RGB> themeNeoGeoCurved({
 	{ GAMEPAD_MASK_R1, ColorBlue },
 });
 
-static std::map<uint32_t, RGB> themeNeoGeoModern({
+static map<uint32_t, RGB> themeNeoGeoModern({
 	{ GAMEPAD_MASK_DU, ColorWhite },
 	{ GAMEPAD_MASK_DD, ColorWhite },
 	{ GAMEPAD_MASK_DL, ColorWhite },
@@ -122,7 +122,7 @@ static std::map<uint32_t, RGB> themeNeoGeoModern({
 	{ GAMEPAD_MASK_B2, ColorBlue },
 });
 
-static std::map<uint32_t, RGB> themeSixButtonFighter({
+static map<uint32_t, RGB> themeSixButtonFighter({
 	{ GAMEPAD_MASK_DU, ColorWhite },
 	{ GAMEPAD_MASK_DD, ColorWhite },
 	{ GAMEPAD_MASK_DL, ColorWhite },
@@ -135,7 +135,7 @@ static std::map<uint32_t, RGB> themeSixButtonFighter({
 	{ GAMEPAD_MASK_R2, ColorRed },
 });
 
-static std::map<uint32_t, RGB> themeSixButtonFighterPlus({
+static map<uint32_t, RGB> themeSixButtonFighterPlus({
 	{ GAMEPAD_MASK_DU, ColorWhite },
 	{ GAMEPAD_MASK_DD, ColorWhite },
 	{ GAMEPAD_MASK_DL, ColorWhite },
@@ -150,7 +150,7 @@ static std::map<uint32_t, RGB> themeSixButtonFighterPlus({
 	{ GAMEPAD_MASK_L2, ColorGreen },
 });
 
-static std::map<uint32_t, RGB> themeStreetFighter2({
+static map<uint32_t, RGB> themeStreetFighter2({
 	{ GAMEPAD_MASK_DU, ColorWhite },
 	{ GAMEPAD_MASK_DD, ColorWhite },
 	{ GAMEPAD_MASK_DL, ColorWhite },
@@ -165,7 +165,7 @@ static std::map<uint32_t, RGB> themeStreetFighter2({
 	{ GAMEPAD_MASK_L2, ColorBlack },
 });
 
-static std::map<uint32_t, RGB> themeTekken({
+static map<uint32_t, RGB> themeTekken({
 	{ GAMEPAD_MASK_DL, ColorWhite },
 	{ GAMEPAD_MASK_DD, ColorWhite },
 	{ GAMEPAD_MASK_DR, ColorWhite },
@@ -177,7 +177,7 @@ static std::map<uint32_t, RGB> themeTekken({
 	{ GAMEPAD_MASK_R1, ColorRed },
 });
 
-static std::map<uint32_t, RGB> themePlayStation({
+static map<uint32_t, RGB> themePlayStation({
 	{ GAMEPAD_MASK_DU, ColorWhite },
 	{ GAMEPAD_MASK_DD, ColorWhite },
 	{ GAMEPAD_MASK_DL, ColorWhite },
@@ -192,7 +192,7 @@ static std::map<uint32_t, RGB> themePlayStation({
 	{ GAMEPAD_MASK_L2, ColorBlack },
 });
 
-static std::map<uint32_t, RGB> themePlayStationAll({
+static map<uint32_t, RGB> themePlayStationAll({
 	{ GAMEPAD_MASK_DU, ColorWhite },
 	{ GAMEPAD_MASK_DD, ColorWhite },
 	{ GAMEPAD_MASK_DL, ColorWhite },
@@ -207,7 +207,7 @@ static std::map<uint32_t, RGB> themePlayStationAll({
 	{ GAMEPAD_MASK_L2, ColorWhite },
 });
 
-static std::map<uint32_t, RGB> themeSuperFamicom({
+static map<uint32_t, RGB> themeSuperFamicom({
 	{ GAMEPAD_MASK_DU, ColorWhite },
 	{ GAMEPAD_MASK_DD, ColorWhite },
 	{ GAMEPAD_MASK_DL, ColorWhite },
@@ -222,7 +222,7 @@ static std::map<uint32_t, RGB> themeSuperFamicom({
 	{ GAMEPAD_MASK_L2, ColorBlack },
 });
 
-static std::map<uint32_t, RGB> themeSuperFamicomAll({
+static map<uint32_t, RGB> themeSuperFamicomAll({
 	{ GAMEPAD_MASK_DU, ColorWhite },
 	{ GAMEPAD_MASK_DD, ColorWhite },
 	{ GAMEPAD_MASK_DL, ColorWhite },
@@ -237,7 +237,7 @@ static std::map<uint32_t, RGB> themeSuperFamicomAll({
 	{ GAMEPAD_MASK_L2, ColorWhite },
 });
 
-static std::map<uint32_t, RGB> themeXbox({
+static map<uint32_t, RGB> themeXbox({
 	{ GAMEPAD_MASK_DU, ColorWhite },
 	{ GAMEPAD_MASK_DD, ColorWhite },
 	{ GAMEPAD_MASK_DL, ColorWhite },
@@ -252,7 +252,7 @@ static std::map<uint32_t, RGB> themeXbox({
 	{ GAMEPAD_MASK_L2, ColorBlack },
 });
 
-static std::map<uint32_t, RGB> themeXboxAll({
+static map<uint32_t, RGB> themeXboxAll({
 	{ GAMEPAD_MASK_DU, ColorWhite },
 	{ GAMEPAD_MASK_DD, ColorWhite },
 	{ GAMEPAD_MASK_DL, ColorWhite },
