@@ -4,7 +4,6 @@
  */
 
 #include "pico/stdlib.h"
-#include "pico.h"
 #include "gamepad.h"
 #include "display.h"
 #include "storage.h"
@@ -63,12 +62,14 @@ void Gamepad::setup()
 		gpio_pull_up(PIN_SETTINGS);          // Set as PULLUP
 	#endif
 
-	Wire.pins(0, 1);
 	cap = new Adafruit_MPR121(0x5A);
 	if(!cap->begin())
 	{
-		pinMode(PICO_DEFAULT_LED_PIN, OUTPUT);
-		digitalWrite(PICO_DEFAULT_LED_PIN, 1);
+		//エラー表示　25番はビルドインLED
+		pinMode(25, OUTPUT);
+		digitalWrite(25, 1);
+		delete(cap);
+		cap = nullptr;
 	}
 	//cap->setThresholds(10, 7);
 }
@@ -119,6 +120,10 @@ void Gamepad::read()
 }
 
 void Gamepad::slideBar(){
+	if (cap == nullptr) {
+		return;
+	}
+	
 	currtouched = cap->touched();
 
 	if (lasttouched == 0 && currtouched == 0) {
