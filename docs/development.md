@@ -1,3 +1,8 @@
+ここでは、開発環境について記述しています。オリジナルとほとんど同じですので、オリジナルをそのまま載せます。  
+日本語環境では、そのままではビルド出来ません。下記を確認してください。
+* 日本語の含まれているディレクトリでは、ビルド出来ません。日本語の無いディレクトリでビルドを行ってください。
+* ビルドを行うと、出力ディレクトリにuf2ファイルが生成されるが、Raspberry Pi Pico への書き込みに失敗します。エラー内容は、uf2conv.py 195行目で文字のデコードに失敗します。ターミナルのエラーファイル表示部分をctrlを押しながらクリックしてファイルを開き、`return b.decode("utf-8")` を `return b.decode("shift_jis")`に書き換えます。
+
 # GP2040 Development
 
 GP2040 is written in C++ and set up as a [PlatformIO](https://platformio.org/) project, using the [Wiz-IO Raspberry Pi Pico](https://github.com/Wiz-IO/wizio-pico) platform package in the `baremetal` (Pico SDK) configuration.
