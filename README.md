@@ -21,7 +21,7 @@ GP2040は、Raspberry Pi PicoおよびRP2040マイコンベースのその他の
 
 オリジナルとほとんど変わらないので、オリジナルを翻訳したものを載せます。
 
-ビルド済み `uf2` ファイルは [Releases](https://github.com/shigobu/GP2040_With_HatsuneMikuPjdTouchSlider/releases) セクションで入手できます。配線図は[こちら](https://raw.githubusercontent.com/shigobu/GP2040_With_HatsuneMikuPjdTouchSlider/main/configs/Pico/assets/PinMapping.png)。
+ビルド済み `uf2` ファイルは [Releases](https://github.com/shigobu/GP2040_With_HatsuneMikuPjdTouchSlider/releases) セクションで入手できます。配線図は[こちら](https://github.com/shigobu/GP2040_With_HatsuneMikuPjdTouchSlider/tree/main/configs/Pico)。
 
 手順は、デバイスによって若干異なります。 これらの手順は、RaspberryPiPico用です。
 
