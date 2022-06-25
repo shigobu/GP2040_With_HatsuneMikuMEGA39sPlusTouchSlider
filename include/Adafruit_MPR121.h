@@ -82,7 +82,7 @@ enum {
 class Adafruit_MPR121 {
 public:
   // Hardware I2C
-  Adafruit_MPR121(uint8_t i2caddr = MPR121_I2CADDR_DEFAULT, i2c_inst_t *theWire = i2c0, int SDA = 0, int SCL = 1, bool enablePullup = true, uint32_t speed_Hz = 100000);
+  Adafruit_MPR121(uint8_t i2caddr = MPR121_I2CADDR_DEFAULT, i2c_inst_t *theWire = i2c0, int SDA = 0, int SCL = 1, bool enablePullup = true, uint32_t speed_Hz = 400000);
 
   bool begin(uint8_t touchThreshold = MPR121_TOUCH_THRESHOLD_DEFAULT,
              uint8_t releaseThreshold = MPR121_RELEASE_THRESHOLD_DEFAULT);
