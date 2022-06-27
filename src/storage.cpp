@@ -14,6 +14,10 @@
 #include "storage.h"
 #include "leds.h"
 
+#ifndef IS_ARCADE_MODE
+#define IS_ARCADE_MODE false
+#endif
+
 /* Board stuffs */
 
 BoardOptions getBoardOptions()
@@ -54,6 +58,7 @@ BoardOptions getBoardOptions()
 		options.displaySize       = DISPLAY_SIZE;
 		options.displayFlip       = DISPLAY_FLIP;
 		options.displayInvert     = DISPLAY_INVERT;
+		options.isArcadeMode	  = IS_ARCADE_MODE;
 	}
 
 	return options;
