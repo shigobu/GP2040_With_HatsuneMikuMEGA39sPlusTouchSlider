@@ -35,7 +35,8 @@ public:
 	void read();
 	void nomalSlideBar();
 	int8_t makeTouchedPosition(uint16_t touched);
-
+	void arcadeSlideBar();
+	
 	void process()
 	{
 		memcpy(&rawState, &state, sizeof(GamepadState));

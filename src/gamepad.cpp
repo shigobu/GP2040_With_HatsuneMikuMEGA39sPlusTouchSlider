@@ -20,6 +20,7 @@ void Gamepad::setup()
 	f2Mask = (GAMEPAD_MASK_A1 | GAMEPAD_MASK_S2);
 	BoardOptions boardOptions = getBoardOptions();
 	isArcadeMode = boardOptions.isArcadeMode;
+	needsConvertJoystickValue = !boardOptions.isArcadeMode;
 
 	mapDpadUp    = new GamepadButtonMapping(boardOptions.pinDpadUp,    GAMEPAD_MASK_UP);
 	mapDpadDown  = new GamepadButtonMapping(boardOptions.pinDpadDown,  GAMEPAD_MASK_DOWN);
@@ -140,7 +141,7 @@ void Gamepad::read()
 
 	if (isArcadeMode) 
 	{
-		//アーケードモードの処理
+		arcadeSlideBar();
 	}
 	else
 	{
@@ -201,4 +202,20 @@ int8_t Gamepad::makeTouchedPosition(uint16_t touched){
 	}
 
 	return (min + max) / 2;
+}
+
+void Gamepad::arcadeSlideBar()
+{
+	if (mpr121_1 == nullptr || mpr121_2 == nullptr || mpr121_3 == nullptr) {
+		return;
+	}
+	
+	currtouched = mpr121_1->touched();
+	currtouched |= mpr121_2->touched() << 12;
+	currtouched |= mpr121_3->touched() << 24;
+
+	state.lx = ((currtouched & 0xff) ^ 0x80) << 8;
+	state.ly = ((currtouched >> 8 & 0xff) ^ 0x80) << 8;
+	state.rx = ((currtouched >> 16 & 0xff) ^ 0x80) << 8;
+	state.ry = ((currtouched >> 24 & 0xff) ^ 0x80) << 8;
 }
