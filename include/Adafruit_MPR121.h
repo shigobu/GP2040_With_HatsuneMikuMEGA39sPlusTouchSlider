@@ -106,6 +106,7 @@ private:
   int _scl = 1;
   uint32_t _speed = 100000;
   bool _enablePullup = true;
+  unsigned long _timeout = 1000; 
 };
 
 #endif
