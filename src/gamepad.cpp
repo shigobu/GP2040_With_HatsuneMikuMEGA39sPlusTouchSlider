@@ -19,6 +19,8 @@ void Gamepad::setup()
 	// Configure pin mapping
 	f2Mask = (GAMEPAD_MASK_A1 | GAMEPAD_MASK_S2);
 	BoardOptions boardOptions = getBoardOptions();
+	isArcadeMode = boardOptions.isArcadeMode;
+	needsConvertJoystickValue = !boardOptions.isArcadeMode;
 
 	mapDpadUp    = new GamepadButtonMapping(boardOptions.pinDpadUp,    GAMEPAD_MASK_UP);
 	mapDpadDown  = new GamepadButtonMapping(boardOptions.pinDpadDown,  GAMEPAD_MASK_DOWN);
@@ -61,16 +63,35 @@ void Gamepad::setup()
 		gpio_pull_up(PIN_SETTINGS);          // Set as PULLUP
 	#endif
 
-	cap = new Adafruit_MPR121(0x5A);
-	if(!cap->begin())
+	//エラー表示用設定　25番はビルドインLED
+	pinMode(25, OUTPUT);
+	digitalWrite(25, 0);
+
+	mpr121_1 = new Adafruit_MPR121(0x5A, i2c0, boardOptions.i2cSDAPin, boardOptions.i2cSCLPin, true, boardOptions.i2cSpeed);
+	if(!mpr121_1->begin())
 	{
-		//エラー表示　25番はビルドインLED
-		pinMode(25, OUTPUT);
 		digitalWrite(25, 1);
-		delete(cap);
-		cap = nullptr;
+		delete(mpr121_1);
+		mpr121_1 = nullptr;
 	}
-	//cap->setThresholds(10, 7);
+	if (isArcadeMode)
+	{
+		mpr121_2 = new Adafruit_MPR121(0x5B, i2c0, boardOptions.i2cSDAPin, boardOptions.i2cSCLPin, true, boardOptions.i2cSpeed);
+		if(!mpr121_2->begin())
+		{
+			digitalWrite(25, 1);
+			delete(mpr121_2);
+			mpr121_2 = nullptr;
+		}
+
+		mpr121_3 = new Adafruit_MPR121(0x5C, i2c0, boardOptions.i2cSDAPin, boardOptions.i2cSCLPin, true, boardOptions.i2cSpeed);
+		if(!mpr121_3->begin())
+		{
+			digitalWrite(25, 1);
+			delete(mpr121_3);
+			mpr121_3 = nullptr;
+		}
+	}
 
 	hasLeftAnalogStick = true;
 	hasRightAnalogStick = true;
@@ -118,15 +139,22 @@ void Gamepad::read()
 	state.lt = 0;
 	state.rt = 0;
 
-	slideBar();
+	if (isArcadeMode) 
+	{
+		arcadeSlideBar();
+	}
+	else
+	{
+		nomalSlideBar();
+	}
 }
 
-void Gamepad::slideBar(){
-	if (cap == nullptr) {
+void Gamepad::nomalSlideBar(){
+	if (mpr121_1 == nullptr) {
 		return;
 	}
 	
-	currtouched = cap->touched();
+	currtouched = mpr121_1->touched();
 
 	if (lasttouched == 0 && currtouched == 0) {
 		//離れている
@@ -174,4 +202,24 @@ int8_t Gamepad::makeTouchedPosition(uint16_t touched){
 	}
 
 	return (min + max) / 2;
+}
+
+void Gamepad::arcadeSlideBar()
+{
+	if (mpr121_1 == nullptr || mpr121_2 == nullptr || mpr121_3 == nullptr) {
+		return;
+	}
+	
+	currtouched = mpr121_3->touched();
+	currtouched |= mpr121_2->touched() << 12;
+	currtouched |= mpr121_1->touched() << 24;
+
+	state.lx = ((currtouched & 0xff) ^ 0x80) << 8;
+	state.ly = ((currtouched >> 8 & 0xff) ^ 0x80) << 8;
+	state.rx = ((currtouched >> 16 & 0xff) ^ 0x80) << 8;
+	state.ry = ((currtouched >> 24 & 0xff) ^ 0x80) << 8;
+	// state.lx = map((currtouched & 0xff)/*  ^ 0x80 */, 0, 0xff, 0, 0xffff);
+	// state.ly = map((currtouched >> 8 & 0xff)/*  ^ 0x80 */, 0, 0xff, 0, 0xffff);
+	// state.rx = map((currtouched >> 16 & 0xff)/*  ^ 0x80 */, 0, 0xff, 0, 0xffff);
+	// state.ry = map((currtouched >> 24 & 0xff)/*  ^ 0x80 */, 0, 0xff, 0, 0xffff);
 }

@@ -33,9 +33,10 @@ public:
 
 	void setup();
 	void read();
-	void slideBar();
+	void nomalSlideBar();
 	int8_t makeTouchedPosition(uint16_t touched);
-
+	void arcadeSlideBar();
+	
 	void process()
 	{
 		memcpy(&rawState, &state, sizeof(GamepadState));
@@ -74,9 +75,10 @@ public:
 
 	GamepadButtonMapping **gamepadMappings;
 
-	Adafruit_MPR121 *cap;
-	uint16_t lasttouched = 0;
-	uint16_t currtouched = 0;
+	bool isArcadeMode = false;
+	Adafruit_MPR121 *mpr121_1 = nullptr, *mpr121_2 = nullptr, *mpr121_3 = nullptr;
+	uint32_t lasttouched = 0;
+	uint32_t currtouched = 0;
 	int8_t startTouchedPosition = 0;
 	int8_t currTouchedPosition = 0;
 };

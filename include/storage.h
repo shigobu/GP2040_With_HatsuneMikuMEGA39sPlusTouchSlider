@@ -49,6 +49,8 @@ struct BoardOptions
 	bool displayFlip;
 	bool displayInvert;
 	uint32_t checksum;
+
+	bool isArcadeMode;
 };
 
 struct LEDOptions
