@@ -32,8 +32,8 @@
 
 #define IS_ARCADE_MODE true
 
-#define I2C_SDA_PIN 26
-#define I2C_SCL_PIN 27
+#define I2C_SDA_PIN 0
+#define I2C_SCL_PIN 1
 #define I2C_SPEED 400000
 
 #endif

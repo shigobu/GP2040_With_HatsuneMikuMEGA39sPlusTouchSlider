@@ -65,6 +65,7 @@ void Gamepad::setup()
 
 	//エラー表示用設定　25番はビルドインLED
 	pinMode(25, OUTPUT);
+	digitalWrite(25, 0);
 
 	mpr121_1 = new Adafruit_MPR121(0x5A, i2c0, boardOptions.i2cSDAPin, boardOptions.i2cSCLPin, true, boardOptions.i2cSpeed);
 	if(!mpr121_1->begin())
@@ -73,7 +74,6 @@ void Gamepad::setup()
 		delete(mpr121_1);
 		mpr121_1 = nullptr;
 	}
-
 	if (isArcadeMode)
 	{
 		mpr121_2 = new Adafruit_MPR121(0x5B, i2c0, boardOptions.i2cSDAPin, boardOptions.i2cSCLPin, true, boardOptions.i2cSpeed);
@@ -210,12 +210,16 @@ void Gamepad::arcadeSlideBar()
 		return;
 	}
 	
-	currtouched = mpr121_1->touched();
+	currtouched = mpr121_3->touched();
 	currtouched |= mpr121_2->touched() << 12;
-	currtouched |= mpr121_3->touched() << 24;
+	currtouched |= mpr121_1->touched() << 24;
 
 	state.lx = ((currtouched & 0xff) ^ 0x80) << 8;
 	state.ly = ((currtouched >> 8 & 0xff) ^ 0x80) << 8;
 	state.rx = ((currtouched >> 16 & 0xff) ^ 0x80) << 8;
 	state.ry = ((currtouched >> 24 & 0xff) ^ 0x80) << 8;
+	// state.lx = map((currtouched & 0xff)/*  ^ 0x80 */, 0, 0xff, 0, 0xffff);
+	// state.ly = map((currtouched >> 8 & 0xff)/*  ^ 0x80 */, 0, 0xff, 0, 0xffff);
+	// state.rx = map((currtouched >> 16 & 0xff)/*  ^ 0x80 */, 0, 0xff, 0, 0xffff);
+	// state.ry = map((currtouched >> 24 & 0xff)/*  ^ 0x80 */, 0, 0xff, 0, 0xffff);
 }
