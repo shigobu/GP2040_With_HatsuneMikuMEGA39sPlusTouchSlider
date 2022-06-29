@@ -72,7 +72,10 @@ bool Adafruit_MPR121::begin(uint8_t touchThreshold, uint8_t releaseThreshold) {
   i2c_init(i2c_dev, _speed);
 
   // soft reset
-  writeRegister(MPR121_SOFTRESET, 0x63);
+  if (!writeRegister(MPR121_SOFTRESET, 0x63)) 
+  {
+    return false;
+  }
   delay(1);
   for (uint8_t i = 0; i < 0x7F; i++) {
     //  Serial.print("$"); Serial.print(i, HEX);
@@ -209,8 +212,8 @@ uint16_t Adafruit_MPR121::touched(void) {
  */
 uint8_t Adafruit_MPR121::readRegister8(uint8_t reg) {
   uint8_t buf;
-  i2c_write_blocking(i2c_dev, _i2caddr, &reg, 1, true);
-  i2c_read_blocking(i2c_dev, _i2caddr, &buf, 1, false);
+  i2c_write_blocking_until(i2c_dev, _i2caddr, &reg, 1, true, make_timeout_time_ms(_timeout));
+  i2c_read_blocking_until(i2c_dev, _i2caddr, &buf, 1, false, make_timeout_time_ms(_timeout));
   
   return buf;
 }
@@ -223,8 +226,8 @@ uint8_t Adafruit_MPR121::readRegister8(uint8_t reg) {
 uint16_t Adafruit_MPR121::readRegister16(uint8_t reg) {
   uint8_t buffer[2];
   uint8_t width = sizeof(buffer) / sizeof(buffer[0]);
-  i2c_write_blocking(i2c_dev, _i2caddr, &reg, 1, true);
-  i2c_read_blocking(i2c_dev, _i2caddr, buffer, width, false);
+  i2c_write_blocking_until(i2c_dev, _i2caddr, &reg, 1, true, make_timeout_time_ms(_timeout));
+  i2c_read_blocking_until(i2c_dev, _i2caddr, buffer, width, false, make_timeout_time_ms(_timeout));
 
   //LSBFIRSTなので、変換
   uint16_t value = 0;
@@ -241,15 +244,18 @@ uint16_t Adafruit_MPR121::readRegister16(uint8_t reg) {
     @param  reg the register address to write to
     @param  value the value to write
 */
-void Adafruit_MPR121::writeRegister(uint8_t reg, uint8_t value) {
+bool Adafruit_MPR121::writeRegister(uint8_t reg, uint8_t value) {
   // MPR121 must be put in Stop Mode to write to most registers
   bool stop_required = true;
 
   // first get the current set value of the MPR121_ECR register
   uint8_t ecrReg = MPR121_ECR;
   uint8_t ecr_backup;
-  i2c_write_blocking(i2c_dev, _i2caddr, &ecrReg, 1, true);
-  i2c_read_blocking(i2c_dev, _i2caddr, &ecr_backup, 1, false);
+  int ret = i2c_write_blocking_until(i2c_dev, _i2caddr, &ecrReg, 1, true, make_timeout_time_ms(_timeout));
+  if (ret !=1) {
+    return false;
+  }
+  i2c_read_blocking_until(i2c_dev, _i2caddr, &ecr_backup, 1, false, make_timeout_time_ms(_timeout));
 
   if ((reg == MPR121_ECR) || ((0x73 <= reg) && (reg <= 0x7A))) {
     stop_required = false;
@@ -260,17 +266,18 @@ void Adafruit_MPR121::writeRegister(uint8_t reg, uint8_t value) {
     // clear this register to set stop mode
     writeVal[0] = MPR121_ECR;
     writeVal[1] = 0x00;
-    i2c_write_blocking(i2c_dev, _i2caddr, writeVal, sizeof(writeVal), false);
+    i2c_write_blocking_until(i2c_dev, _i2caddr, writeVal, sizeof(writeVal), false, make_timeout_time_ms(_timeout));
   }
 
   writeVal[0] = reg;
   writeVal[1] = value;
-  i2c_write_blocking(i2c_dev, _i2caddr, writeVal, sizeof(writeVal), false);
+  i2c_write_blocking_until(i2c_dev, _i2caddr, writeVal, sizeof(writeVal), false, make_timeout_time_ms(_timeout));
 
   if (stop_required) {
     // write back the previous set ECR settings
     writeVal[0] = MPR121_ECR;
     writeVal[1] = ecr_backup;
-    i2c_write_blocking(i2c_dev, _i2caddr, writeVal, sizeof(writeVal), false);
+    i2c_write_blocking_until(i2c_dev, _i2caddr, writeVal, sizeof(writeVal), false, make_timeout_time_ms(_timeout));
   }
+  return true;
 }

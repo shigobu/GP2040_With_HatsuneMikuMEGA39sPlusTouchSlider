@@ -92,7 +92,7 @@ public:
 
   uint8_t readRegister8(uint8_t reg);
   uint16_t readRegister16(uint8_t reg);
-  void writeRegister(uint8_t reg, uint8_t value);
+  bool writeRegister(uint8_t reg, uint8_t value);
   uint16_t touched(void);
   // Add deprecated attribute so that the compiler shows a warning
   void setThreshholds(uint8_t touch, uint8_t release)
@@ -106,6 +106,7 @@ private:
   int _scl = 1;
   uint32_t _speed = 100000;
   bool _enablePullup = true;
+  unsigned long _timeout = 1000; 
 };
 
 #endif
