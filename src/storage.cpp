@@ -14,6 +14,10 @@
 #include "storage.h"
 #include "leds.h"
 
+#ifndef IS_TOUCH_32BIT
+#define IS_TOUCH_32BIT false
+#endif
+
 /* Board stuffs */
 
 BoardOptions getBoardOptions()
@@ -49,6 +53,7 @@ BoardOptions getBoardOptions()
 		options.i2cSCLPin         = I2C_SCL_PIN;
 		options.i2cBlock          = (I2C_BLOCK == i2c0) ? 0 : 1;
 		options.i2cSpeed          = I2C_SPEED;
+		options.isTouch32Bit	  = IS_TOUCH_32BIT;
 		options.hasI2CDisplay     = HAS_I2C_DISPLAY;
 		options.displayI2CAddress = DISPLAY_I2C_ADDR;
 		options.displaySize       = DISPLAY_SIZE;

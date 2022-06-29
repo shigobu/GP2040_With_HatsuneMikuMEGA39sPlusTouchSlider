@@ -43,6 +43,8 @@ struct BoardOptions
 	int i2cBlock;
 	uint32_t i2cSpeed;
 
+	bool isTouch32Bit;
+
 	bool hasI2CDisplay;
 	int displayI2CAddress;
 	uint8_t displaySize;
