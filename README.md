@@ -6,7 +6,7 @@ GP2040は、Raspberry Pi PicoおよびRP2040マイコンベースのその他の
 
 ## 製作動画
 
-https://nico.ms/sm40676318
+https://youtu.be/6D4ch3M42QQ
 
 ## 対応タッチセンサ
 
