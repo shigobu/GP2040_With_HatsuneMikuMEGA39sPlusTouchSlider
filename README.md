@@ -4,6 +4,10 @@
 
 GP2040は、Raspberry Pi PicoおよびRP2040マイコンベースのその他のボード用ゲームパッドファームウェアであり、複数のプラットフォームにまたがる豊富な機能セットを備えた高性能を提供します。詳細は、[オリジナル](https://github.com/FeralAI/GP2040)のドキュメントをご覧ください。
 
+## 製作動画
+
+https://nico.ms/sm40676318
+
 ## 対応タッチセンサ
 
 * [Adafruit MPR121 12-Key Capacitive Touch Sensor](https://www.adafruit.com/product/1982) またはMPR121チップ使用同等品  
