@@ -32,6 +32,7 @@
 
 #define IS_TOUCH_32BIT true
 
+#define I2C_BLOCK i2c0
 #define I2C_SDA_PIN 0
 #define I2C_SCL_PIN 1
 #define I2C_SPEED 400000

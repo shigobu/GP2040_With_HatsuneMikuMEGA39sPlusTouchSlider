@@ -65,7 +65,7 @@ void Gamepad::setup()
 	pinMode(25, OUTPUT);
 	digitalWrite(25, 0);
 
-	mpr121_1 = new Adafruit_MPR121(0x5A, i2c0, boardOptions.i2cSDAPin, boardOptions.i2cSCLPin, true, boardOptions.i2cSpeed);
+	mpr121_1 = new Adafruit_MPR121(0x5A, (boardOptions.i2cBlock == 0) ? i2c0 : i2c1, boardOptions.i2cSDAPin, boardOptions.i2cSCLPin, true, boardOptions.i2cSpeed);
 	if(!mpr121_1->begin())
 	{
 		digitalWrite(25, 1);
@@ -74,7 +74,7 @@ void Gamepad::setup()
 	}
 	if (boardOptions.isTouch32Bit)
 	{
-		mpr121_2 = new Adafruit_MPR121(0x5B, i2c0, boardOptions.i2cSDAPin, boardOptions.i2cSCLPin, true, boardOptions.i2cSpeed);
+		mpr121_2 = new Adafruit_MPR121(0x5B, (boardOptions.i2cBlock == 0) ? i2c0 : i2c1, boardOptions.i2cSDAPin, boardOptions.i2cSCLPin, true, boardOptions.i2cSpeed);
 		if(!mpr121_2->begin())
 		{
 			digitalWrite(25, 1);
@@ -82,7 +82,7 @@ void Gamepad::setup()
 			mpr121_2 = nullptr;
 		}
 
-		mpr121_3 = new Adafruit_MPR121(0x5C, i2c0, boardOptions.i2cSDAPin, boardOptions.i2cSCLPin, true, boardOptions.i2cSpeed);
+		mpr121_3 = new Adafruit_MPR121(0x5C, (boardOptions.i2cBlock == 0) ? i2c0 : i2c1, boardOptions.i2cSDAPin, boardOptions.i2cSCLPin, true, boardOptions.i2cSpeed);
 		if(!mpr121_3->begin())
 		{
 			digitalWrite(25, 1);
