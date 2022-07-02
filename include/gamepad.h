@@ -34,7 +34,7 @@ public:
 	void setup();
 	void read();
 	void slideBar();
-	int8_t makeTouchedPosition(uint16_t touched);
+	int8_t makeTouchedPosition(uint32_t touched);
 
 	void process()
 	{

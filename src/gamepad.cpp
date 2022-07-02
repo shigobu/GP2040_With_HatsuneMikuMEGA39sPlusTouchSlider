@@ -198,10 +198,10 @@ void Gamepad::slideBar()
 	lasttouched = currtouched;
 }
 
-int8_t Gamepad::makeTouchedPosition(uint16_t touched){
+int8_t Gamepad::makeTouchedPosition(uint32_t touched){
 	int8_t bit = 0;
 	int8_t min = 0;
-	for (bit = 0; bit < 12; bit++)
+	for (bit = 0; bit < 32; bit++)
 	{
 		if (touched & (1 << bit))
 		{
@@ -209,8 +209,8 @@ int8_t Gamepad::makeTouchedPosition(uint16_t touched){
 		}
 	}
 
-	int8_t max = 11;
-	for (bit = 11; bit >= 0; bit--)
+	int8_t max = 31;
+	for (bit = 31; bit >= 0; bit--)
 	{
 		if (touched & (1 << bit))
 		{
