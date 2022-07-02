@@ -23,8 +23,6 @@ https://youtu.be/6D4ch3M42QQ
 
 ## インストール方法
 
-**現状、なぜか先にオリジナルをインストールしてからタッチスライダー拡張版をインストールしないと、正常に動作しません。**
-
 オリジナルとほとんど変わらないので、オリジナルを翻訳したものを載せます。
 
 ビルド済み `uf2` ファイルは [Releases](https://github.com/shigobu/GP2040_With_HatsuneMikuPjdTouchSlider/releases) セクションで入手できます。配線図は[こちら](https://github.com/shigobu/GP2040_With_HatsuneMikuPjdTouchSlider/tree/main/configs/Pico)。
