@@ -65,6 +65,7 @@ void Gamepad::setup()
 	pinMode(25, OUTPUT);
 	digitalWrite(25, 0);
 
+	isTouch32Bit = boardOptions.isTouch32Bit;
 	mpr121_1 = new Adafruit_MPR121(0x5A, (boardOptions.i2cBlock == 0) ? i2c0 : i2c1, boardOptions.i2cSDAPin, boardOptions.i2cSCLPin, true, boardOptions.i2cSpeed);
 	if(!mpr121_1->begin())
 	{
@@ -140,34 +141,55 @@ void Gamepad::read()
 	slideBar();
 }
 
-void Gamepad::slideBar(){
-	if (mpr121_1 == nullptr) {
+void Gamepad::slideBar()
+{
+	if (mpr121_1 == nullptr)
+	{
 		return;
 	}
-	
 	currtouched = mpr121_1->touched();
 
-	if (lasttouched == 0 && currtouched == 0) {
+	if (isTouch32Bit)
+	{
+		if (mpr121_2 == nullptr || mpr121_3 == nullptr)
+		{
+			return;
+		}
+		currtouched |= mpr121_2->touched() << 12;
+		currtouched |= mpr121_3->touched() << 24;
+	}
+
+	if (lasttouched == 0 && currtouched == 0)
+	{
 		//離れている
 		startTouchedPosition = 0;
 		currTouchedPosition = 0;
 		state.lx = GAMEPAD_JOYSTICK_MID;
-	} else if (lasttouched == 0 && currtouched != 0) {
+	}
+	else if (lasttouched == 0 && currtouched != 0)
+	{
 		//触れたとき
 		startTouchedPosition = makeTouchedPosition(currtouched);
 		state.lx = GAMEPAD_JOYSTICK_MID;
-	} else if (lasttouched != 0 && currtouched == 0) {
+	}
+	else if (lasttouched != 0 && currtouched == 0)
+	{
 		//離れたとき
 		startTouchedPosition = 0;
 		currTouchedPosition = 0;
 		state.lx = GAMEPAD_JOYSTICK_MID;
-	} else if (lasttouched != 0 && currtouched != 0) {
+	}
+	else if (lasttouched != 0 && currtouched != 0)
+	{
 		//触れている途中
 		currTouchedPosition = makeTouchedPosition(currtouched);
 		int16_t dist = currTouchedPosition - startTouchedPosition;
-		if (dist > 3) {
+		if (dist > 3)
+		{
 			dist = 3;
-		} else if (dist < -3) {
+		}
+		else if (dist < -3)
+		{
 			dist = -3;
 		}
 		state.lx = GAMEPAD_JOYSTICK_MID + dist * (GAMEPAD_JOYSTICK_MID / 3);
@@ -179,15 +201,19 @@ void Gamepad::slideBar(){
 int8_t Gamepad::makeTouchedPosition(uint16_t touched){
 	int8_t bit = 0;
 	int8_t min = 0;
-	for (bit = 0; bit < 12; bit++) {
-		if (touched & (1 << bit)) {
+	for (bit = 0; bit < 12; bit++)
+	{
+		if (touched & (1 << bit))
+		{
 			min = bit;
 		}
 	}
 
 	int8_t max = 11;
-	for (bit = 11; bit >= 0; bit--) {
-		if (touched & (1 << bit)) {
+	for (bit = 11; bit >= 0; bit--)
+	{
+		if (touched & (1 << bit))
+		{
 			max = bit;
 		}
 	}
