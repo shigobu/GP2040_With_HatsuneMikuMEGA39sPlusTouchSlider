@@ -74,7 +74,7 @@ public:
 
 	GamepadButtonMapping **gamepadMappings;
 
-	Adafruit_MPR121 *cap;
+	Adafruit_MPR121 *mpr121_1 = nullptr, *mpr121_2 = nullptr, *mpr121_3 = nullptr;
 	uint16_t lasttouched = 0;
 	uint16_t currtouched = 0;
 	int8_t startTouchedPosition = 0;
