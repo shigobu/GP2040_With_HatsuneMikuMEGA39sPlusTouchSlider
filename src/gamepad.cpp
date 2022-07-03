@@ -169,7 +169,7 @@ void Gamepad::slideBar()
 	else if (lasttouched == 0 && currtouched != 0)
 	{
 		//触れたとき
-		startTouchedPosition = makeTouchedPosition(currtouched);
+		makeTouchedPosition(currtouched, startTouchedPosition);
 		state.lx = GAMEPAD_JOYSTICK_MID;
 	}
 	else if (lasttouched != 0 && currtouched == 0)
@@ -182,7 +182,7 @@ void Gamepad::slideBar()
 	else if (lasttouched != 0 && currtouched != 0)
 	{
 		//触れている途中
-		currTouchedPosition = makeTouchedPosition(currtouched);
+		makeTouchedPosition(currtouched, currTouchedPosition);
 		int16_t dist = currTouchedPosition - startTouchedPosition;
 		if (dist > 3)
 		{
@@ -198,7 +198,8 @@ void Gamepad::slideBar()
 	lasttouched = currtouched;
 }
 
-int8_t Gamepad::makeTouchedPosition(uint32_t touched){
+void Gamepad::makeTouchedPosition(uint32_t touched, int8_t &left, int8_t &right)
+{
 	int8_t bit = 0;
 	int8_t min = 0;
 	for (bit = 0; bit < 32; bit++)
@@ -218,5 +219,5 @@ int8_t Gamepad::makeTouchedPosition(uint32_t touched){
 		}
 	}
 
-	return (min + max) / 2;
+	left = (min + max) / 2;
 }

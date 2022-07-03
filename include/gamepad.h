@@ -34,7 +34,7 @@ public:
 	void setup();
 	void read();
 	void slideBar();
-	int8_t makeTouchedPosition(uint32_t touched);
+	void makeTouchedPosition(uint32_t touched, int8_t &left, int8_t &right);
 
 	void process()
 	{
@@ -76,10 +76,12 @@ public:
 
 	Adafruit_MPR121 *mpr121_1 = nullptr, *mpr121_2 = nullptr, *mpr121_3 = nullptr;
 	bool isTouch32Bit = false;
-	uint32_t lasttouched = 0;
 	uint32_t currtouched = 0;
-	int8_t startTouchedPosition = 0;
-	int8_t currTouchedPosition = 0;
+	uint32_t lasttouched = 0;
+	int8_t startTouchedPositionL = 0;
+	int8_t startTouchedPositionR = 0;
+	int8_t currTouchedPositionL = 0;
+	int8_t currTouchedPositionR = 0;
 };
 
 #endif
