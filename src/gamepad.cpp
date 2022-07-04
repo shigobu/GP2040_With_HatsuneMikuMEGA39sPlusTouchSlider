@@ -159,31 +159,31 @@ void Gamepad::slideBar()
 		currtouched |= mpr121_3->touched() << 24;
 	}
 
-	if (lasttouched == 0 && currtouched == 0)
+	makeTouchedPosition(currtouched, currTouchedPositionL, currTouchedPositionR);
+
+  //左スティックの処理
+	if (lastTouchedPositionL == NOT_TOUCHED && currTouchedPositionL == NOT_TOUCHED)
 	{
 		//離れている
-		startTouchedPosition = 0;
-		currTouchedPosition = 0;
+		startTouchedPositionL = NOT_TOUCHED;
 		state.lx = GAMEPAD_JOYSTICK_MID;
 	}
-	else if (lasttouched == 0 && currtouched != 0)
+	else if (lastTouchedPositionL == NOT_TOUCHED && currTouchedPositionL != NOT_TOUCHED)
 	{
 		//触れたとき
-		makeTouchedPosition(currtouched, startTouchedPosition);
+    startTouchedPositionL = currTouchedPositionL;
 		state.lx = GAMEPAD_JOYSTICK_MID;
 	}
-	else if (lasttouched != 0 && currtouched == 0)
+	else if (lastTouchedPositionL != NOT_TOUCHED && currTouchedPositionL == NOT_TOUCHED)
 	{
 		//離れたとき
-		startTouchedPosition = 0;
-		currTouchedPosition = 0;
+		startTouchedPositionL = NOT_TOUCHED;
 		state.lx = GAMEPAD_JOYSTICK_MID;
 	}
-	else if (lasttouched != 0 && currtouched != 0)
+	else if (lastTouchedPositionL != NOT_TOUCHED && currTouchedPositionL != NOT_TOUCHED)
 	{
 		//触れている途中
-		makeTouchedPosition(currtouched, currTouchedPosition);
-		int16_t dist = currTouchedPosition - startTouchedPosition;
+		int16_t dist = currTouchedPositionL - startTouchedPositionL;
 		if (dist > 3)
 		{
 			dist = 3;
@@ -195,11 +195,51 @@ void Gamepad::slideBar()
 		state.lx = GAMEPAD_JOYSTICK_MID + dist * (GAMEPAD_JOYSTICK_MID / 3);
 	}
 
-	lasttouched = currtouched;
+	lastTouchedPositionL = currTouchedPositionL;
+
+  //右スティックの処理
+	if (lastTouchedPositionR == NOT_TOUCHED && currTouchedPositionR == NOT_TOUCHED)
+	{
+		//離れている
+		startTouchedPositionR = NOT_TOUCHED;
+		state.lx = GAMEPAD_JOYSTICK_MID;
+	}
+	else if (lastTouchedPositionR == NOT_TOUCHED && currTouchedPositionR != NOT_TOUCHED)
+	{
+		//触れたとき
+    startTouchedPositionR = currTouchedPositionR;
+		state.lx = GAMEPAD_JOYSTICK_MID;
+	}
+	else if (lastTouchedPositionR != NOT_TOUCHED && currTouchedPositionR == NOT_TOUCHED)
+	{
+		//離れたとき
+		startTouchedPositionR = NOT_TOUCHED;
+		state.lx = GAMEPAD_JOYSTICK_MID;
+	}
+	else if (lastTouchedPositionR != NOT_TOUCHED && currTouchedPositionR != NOT_TOUCHED)
+	{
+		//触れている途中
+		int16_t dist = currTouchedPositionR - startTouchedPositionR;
+		if (dist > 3)
+		{
+			dist = 3;
+		}
+		else if (dist < -3)
+		{
+			dist = -3;
+		}
+		state.lx = GAMEPAD_JOYSTICK_MID + dist * (GAMEPAD_JOYSTICK_MID / 3);
+	}
+
+	lastTouchedPositionR = currTouchedPositionR;
+
 }
 
 void Gamepad::makeTouchedPosition(uint32_t touched, int8_t &left, int8_t &right)
 {
+  left = NOT_TOUCHED;
+  right = NOT_TOUCHED;
+
 	int8_t bit = 0;
 	int8_t min = 0;
 	for (bit = 0; bit < 32; bit++)
