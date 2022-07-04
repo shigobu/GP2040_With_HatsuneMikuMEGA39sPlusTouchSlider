@@ -237,8 +237,8 @@ void Gamepad::slideBar()
 
 void Gamepad::makeTouchedPosition(uint32_t touched, int8_t &left, int8_t &right)
 {
-  left = NOT_TOUCHED;
-  right = NOT_TOUCHED;
+	left = NOT_TOUCHED;
+	right = NOT_TOUCHED;
 
 	int8_t bit = 0;
 	int8_t min = 0;
