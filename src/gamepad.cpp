@@ -65,6 +65,7 @@ void Gamepad::setup()
 	pinMode(25, OUTPUT);
 	digitalWrite(25, 0);
 
+	isTouch32Bit = boardOptions.isTouch32Bit;
 	mpr121_1 = new Adafruit_MPR121(0x5A, (boardOptions.i2cBlock == 0) ? i2c0 : i2c1, boardOptions.i2cSDAPin, boardOptions.i2cSCLPin, true, boardOptions.i2cSpeed);
 	if(!mpr121_1->begin())
 	{
@@ -140,57 +141,123 @@ void Gamepad::read()
 	slideBar();
 }
 
-void Gamepad::slideBar(){
-	if (mpr121_1 == nullptr) {
+void Gamepad::slideBar()
+{
+	if (mpr121_1 == nullptr)
+	{
 		return;
 	}
-	
 	currtouched = mpr121_1->touched();
 
-	if (lasttouched == 0 && currtouched == 0) {
+	if (isTouch32Bit)
+	{
+		if (mpr121_2 == nullptr || mpr121_3 == nullptr)
+		{
+			return;
+		}
+		currtouched |= mpr121_2->touched() << 12;
+		currtouched |= mpr121_3->touched() << 24;
+	}
+
+	makeTouchedPosition(currtouched, currTouchedPositionL, currTouchedPositionR);
+
+  //左スティックの処理
+	if (lastTouchedPositionL == NOT_TOUCHED && currTouchedPositionL == NOT_TOUCHED)
+	{
 		//離れている
-		startTouchedPosition = 0;
-		currTouchedPosition = 0;
+		startTouchedPositionL = NOT_TOUCHED;
 		state.lx = GAMEPAD_JOYSTICK_MID;
-	} else if (lasttouched == 0 && currtouched != 0) {
+	}
+	else if (lastTouchedPositionL == NOT_TOUCHED && currTouchedPositionL != NOT_TOUCHED)
+	{
 		//触れたとき
-		startTouchedPosition = makeTouchedPosition(currtouched);
+    startTouchedPositionL = currTouchedPositionL;
 		state.lx = GAMEPAD_JOYSTICK_MID;
-	} else if (lasttouched != 0 && currtouched == 0) {
+	}
+	else if (lastTouchedPositionL != NOT_TOUCHED && currTouchedPositionL == NOT_TOUCHED)
+	{
 		//離れたとき
-		startTouchedPosition = 0;
-		currTouchedPosition = 0;
+		startTouchedPositionL = NOT_TOUCHED;
 		state.lx = GAMEPAD_JOYSTICK_MID;
-	} else if (lasttouched != 0 && currtouched != 0) {
+	}
+	else if (lastTouchedPositionL != NOT_TOUCHED && currTouchedPositionL != NOT_TOUCHED)
+	{
 		//触れている途中
-		currTouchedPosition = makeTouchedPosition(currtouched);
-		int16_t dist = currTouchedPosition - startTouchedPosition;
-		if (dist > 3) {
+		int16_t dist = currTouchedPositionL - startTouchedPositionL;
+		if (dist > 3)
+		{
 			dist = 3;
-		} else if (dist < -3) {
+		}
+		else if (dist < -3)
+		{
 			dist = -3;
 		}
 		state.lx = GAMEPAD_JOYSTICK_MID + dist * (GAMEPAD_JOYSTICK_MID / 3);
 	}
 
-	lasttouched = currtouched;
+	lastTouchedPositionL = currTouchedPositionL;
+
+  //右スティックの処理
+	if (lastTouchedPositionR == NOT_TOUCHED && currTouchedPositionR == NOT_TOUCHED)
+	{
+		//離れている
+		startTouchedPositionR = NOT_TOUCHED;
+		state.lx = GAMEPAD_JOYSTICK_MID;
+	}
+	else if (lastTouchedPositionR == NOT_TOUCHED && currTouchedPositionR != NOT_TOUCHED)
+	{
+		//触れたとき
+    startTouchedPositionR = currTouchedPositionR;
+		state.lx = GAMEPAD_JOYSTICK_MID;
+	}
+	else if (lastTouchedPositionR != NOT_TOUCHED && currTouchedPositionR == NOT_TOUCHED)
+	{
+		//離れたとき
+		startTouchedPositionR = NOT_TOUCHED;
+		state.lx = GAMEPAD_JOYSTICK_MID;
+	}
+	else if (lastTouchedPositionR != NOT_TOUCHED && currTouchedPositionR != NOT_TOUCHED)
+	{
+		//触れている途中
+		int16_t dist = currTouchedPositionR - startTouchedPositionR;
+		if (dist > 3)
+		{
+			dist = 3;
+		}
+		else if (dist < -3)
+		{
+			dist = -3;
+		}
+		state.lx = GAMEPAD_JOYSTICK_MID + dist * (GAMEPAD_JOYSTICK_MID / 3);
+	}
+
+	lastTouchedPositionR = currTouchedPositionR;
+
 }
 
-int8_t Gamepad::makeTouchedPosition(uint16_t touched){
+void Gamepad::makeTouchedPosition(uint32_t touched, int8_t &left, int8_t &right)
+{
+  left = NOT_TOUCHED;
+  right = NOT_TOUCHED;
+
 	int8_t bit = 0;
 	int8_t min = 0;
-	for (bit = 0; bit < 12; bit++) {
-		if (touched & (1 << bit)) {
+	for (bit = 0; bit < 32; bit++)
+	{
+		if (touched & (1 << bit))
+		{
 			min = bit;
 		}
 	}
 
-	int8_t max = 11;
-	for (bit = 11; bit >= 0; bit--) {
-		if (touched & (1 << bit)) {
+	int8_t max = 31;
+	for (bit = 31; bit >= 0; bit--)
+	{
+		if (touched & (1 << bit))
+		{
 			max = bit;
 		}
 	}
 
-	return (min + max) / 2;
+	left = (min + max) / 2;
 }

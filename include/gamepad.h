@@ -9,6 +9,7 @@
 #include "Adafruit_MPR121.h"
 
 #define GAMEPAD_FEATURE_REPORT_SIZE 32
+#define NOT_TOUCHED -1
 
 struct GamepadButtonMapping
 {
@@ -34,7 +35,7 @@ public:
 	void setup();
 	void read();
 	void slideBar();
-	int8_t makeTouchedPosition(uint16_t touched);
+	void makeTouchedPosition(uint32_t touched, int8_t &left, int8_t &right);
 
 	void process()
 	{
@@ -75,10 +76,14 @@ public:
 	GamepadButtonMapping **gamepadMappings;
 
 	Adafruit_MPR121 *mpr121_1 = nullptr, *mpr121_2 = nullptr, *mpr121_3 = nullptr;
-	uint16_t lasttouched = 0;
-	uint16_t currtouched = 0;
-	int8_t startTouchedPosition = 0;
-	int8_t currTouchedPosition = 0;
+	bool isTouch32Bit = false;
+	uint32_t currtouched = 0;
+	int8_t startTouchedPositionL = -1;
+	int8_t startTouchedPositionR = -1;
+	int8_t currTouchedPositionL = -1;
+	int8_t currTouchedPositionR = -1;
+	int8_t lastTouchedPositionL = -1;
+	int8_t lastTouchedPositionR = -1;
 };
 
 #endif
