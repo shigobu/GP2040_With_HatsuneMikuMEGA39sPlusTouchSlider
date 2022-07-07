@@ -237,27 +237,97 @@ void Gamepad::slideBar()
 
 void Gamepad::makeTouchedPosition(uint32_t touched, int8_t &left, int8_t &right)
 {
-  left = NOT_TOUCHED;
-  right = NOT_TOUCHED;
+	//下位ビットから順に見て、ビットの立っている範囲を2箇所見つける
+	//ビットの立っている範囲の端の位置を格納する。-1はビットが立っていないことを示す。
+	int8_t bitEdge[] = {-1, -1, -1, -1};
+	int8_t bitEdgeIndex = 0;
 
-	int8_t bit = 0;
-	int8_t min = 0;
-	for (bit = 0; bit < 32; bit++)
+	//最初の1ビットを判定
+	if (touched & 1)
 	{
-		if (touched & (1 << bit))
+		bitEdge[bitEdgeIndex++] = 0;
+	}
+
+	for (int8_t bit = 1; bit < 33; bit++)
+	{
+		if (bitEdgeIndex > 3)
 		{
-			min = bit;
+			break;
+		}
+
+		//前のビットと比較して、異なっていたら、ビットが立っている範囲の端で有る
+		bool prevBit = (touched & (1 << (bit - 1))) ? true : false;
+		bool curBit;
+		//32番目のビットは存在しないため、false。
+		if (bit == 32)
+		{
+			curBit = false;
+		}
+		else
+		{
+			curBit = (touched & (1 << (bit))) ? true : false;
+		}
+
+		if (prevBit != curBit)
+		{
+			bitEdge[bitEdgeIndex++] = bit;
 		}
 	}
 
-	int8_t max = 31;
-	for (bit = 31; bit >= 0; bit--)
+	int8_t tempRight = (bitEdge[0] + bitEdge[1]) / 2;
+	int8_t tempLeft = (bitEdge[2] + bitEdge[3]) / 2;
+	int8_t touchHalfPos = getTouchWidth() / 2;
+
+	if (tempRight < 0 && tempLeft < 0)
 	{
-		if (touched & (1 << bit))
+		left = NOT_TOUCHED;
+		right = NOT_TOUCHED;
+		return;
+	}
+	else if (tempRight >= 0 && tempLeft < 0)
+	{
+		if (left != NOT_TOUCHED)
 		{
-			max = bit;
+			left = tempRight;
+			right = NOT_TOUCHED;
+			return;
+		}
+		else if (right != NOT_TOUCHED)
+		{
+			left = NOT_TOUCHED;
+			right = tempRight;
+			return;
+		}
+		else
+		{
+			if (tempRight <= touchHalfPos)
+			{
+				right = tempRight;
+			}
+			else
+			{
+				left = tempRight;
+			}
+			return;
 		}
 	}
+	else if (tempRight >= 0 || tempLeft >= 0)
+	{
 
-	left = (min + max) / 2;
+	}
+
+
+
+}
+
+int8_t Gamepad::getTouchWidth()
+{
+	if (isTouch32Bit)
+	{
+		return 32;
+	}
+	else
+	{
+		return 12;
+	}
 }

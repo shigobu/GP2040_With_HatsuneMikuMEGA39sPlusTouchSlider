@@ -36,6 +36,7 @@ public:
 	void read();
 	void slideBar();
 	void makeTouchedPosition(uint32_t touched, int8_t &left, int8_t &right);
+	int8_t getTouchWidth();
 
 	void process()
 	{
@@ -84,6 +85,15 @@ public:
 	int8_t currTouchedPositionR = -1;
 	int8_t lastTouchedPositionL = -1;
 	int8_t lastTouchedPositionR = -1;
+};
+
+enum positionFoundState
+{
+	notFound,
+	min1,
+	max1,
+	min2,
+	max2
 };
 
 #endif
